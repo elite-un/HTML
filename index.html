@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I'm Sorry 🌹</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crimson: #8B0000;
+    --crimson-light: #C0392B;
+    --crimson-glow: #FF4444;
+    --gold: #C9A84C;
+    --gold-light: #F0D080;
+    --dark: #0D0508;
+    --dark-mid: #1A0810;
+    --parchment: #F5E6D0;
+    --ash: #C8A8A8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--dark);
+    font-family: 'Lora', serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Ember particles */
+  .embers {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .ember {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, #FF6600, #FF2200 60%, transparent);
+    animation: floatEmber linear infinite;
+    opacity: 0;
+  }
+
+  @keyframes floatEmber {
+    0%   { transform: translateY(100vh) translateX(0) scale(1); opacity: 0; }
+    10%  { opacity: 0.9; }
+    90%  { opacity: 0.5; }
+    100% { transform: translateY(-10vh) translateX(var(--drift)) scale(0.3); opacity: 0; }
+  }
+
+  /* Background flame glow */
+  .bg-glow {
+    position: fixed;
+    bottom: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse at bottom, rgba(180,30,0,0.35) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.7; transform: translateX(-50%) scaleX(1); }
+    50%       { opacity: 1;   transform: translateX(-50%) scaleX(1.1); }
+  }
+
+  /* Card */
+  .card {
+    position: relative;
+    z-index: 10;
+    background: linear-gradient(160deg, #1F0A10 0%, #120509 60%, #1A0D08 100%);
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 20px;
+    padding: 48px 44px 44px;
+    max-width: 520px;
+    width: 90%;
+    box-shadow:
+      0 0 60px rgba(139,0,0,0.5),
+      0 0 120px rgba(139,0,0,0.2),
+      inset 0 0 40px rgba(0,0,0,0.6);
+    text-align: center;
+    animation: cardIn 1s cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(40px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Corner ornaments */
+  .card::before, .card::after {
+    content: '✦';
+    position: absolute;
+    color: var(--gold);
+    font-size: 18px;
+    opacity: 0.6;
+  }
+  .card::before { top: 14px; left: 18px; }
+  .card::after  { bottom: 14px; right: 18px; }
+
+  /* Diluc SVG illustration */
+  .diluc-wrap {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 8px;
+    animation: floatChar 4s ease-in-out infinite;
+  }
+
+  @keyframes floatChar {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-10px); }
+  }
+
+  .diluc-svg {
+    width: 140px;
+    height: 140px;
+    filter: drop-shadow(0 0 18px rgba(200,40,0,0.7));
+  }
+
+  /* Halo ring */
+  .halo {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 18px;
+    background: radial-gradient(ellipse, rgba(200,50,0,0.5) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: haloFlicker 3s ease-in-out infinite;
+  }
+
+  @keyframes haloFlicker {
+    0%, 100% { opacity: 0.6; transform: translateX(-50%) scaleX(1); }
+    50%       { opacity: 1;   transform: translateX(-50%) scaleX(1.2); }
+  }
+
+  /* Title */
+  .title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    opacity: 0.85;
+    animation: fadeSlide 0.8s 0.3s both;
+  }
+
+  /* Big sorry */
+  .sorry-text {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(38px, 10vw, 56px);
+    font-weight: 700;
+    color: var(--parchment);
+    line-height: 1;
+    margin-bottom: 6px;
+    text-shadow:
+      0 0 30px rgba(255,80,40,0.7),
+      0 0 60px rgba(255,40,0,0.35);
+    animation: fadeSlide 0.8s 0.5s both;
+  }
+
+  /* Rose divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    animation: fadeSlide 0.8s 0.65s both;
+  }
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,168,76,0.5), transparent);
+  }
+  .divider-rose { font-size: 22px; }
+
+  /* Message */
+  .message {
+    color: var(--ash);
+    font-size: 15.5px;
+    line-height: 1.85;
+    font-style: italic;
+    margin-bottom: 28px;
+    animation: fadeSlide 0.8s 0.8s both;
+  }
+
+  .message strong {
+    color: var(--parchment);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* Heart button */
+  .btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #8B0000, #C0392B);
+    color: var(--parchment);
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 24px rgba(139,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.3);
+    transition: all 0.3s ease;
+    animation: fadeSlide 0.8s 1s both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+    border-radius: inherit;
+  }
+
+  .btn:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 8px 32px rgba(200,40,0,0.7), 0 0 0 1px rgba(201,168,76,0.6);
+  }
+
+  .btn:active { transform: scale(0.97); }
+
+  /* Response popup */
+  .response {
+    display: none;
+    margin-top: 24px;
+    padding: 18px 20px;
+    background: rgba(139,0,0,0.15);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 12px;
+    color: var(--gold-light);
+    font-size: 14.5px;
+    line-height: 1.7;
+    animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.85) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  /* Small quote */
+  .quote {
+    margin-top: 18px;
+    font-size: 12px;
+    color: rgba(201,168,76,0.5);
+    letter-spacing: 0.08em;
+    animation: fadeSlide 0.8s 1.2s both;
+  }
+
+  /* Floating hearts */
+  .hearts { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+  .heart {
+    position: absolute;
+    font-size: 18px;
+    animation: floatHeart 3s ease-in-out forwards;
+    opacity: 0;
+  }
+  @keyframes floatHeart {
+    0%   { opacity: 0; transform: translateY(0) scale(0.5); }
+    20%  { opacity: 1; transform: translateY(-30px) scale(1); }
+    100% { opacity: 0; transform: translateY(-160px) scale(0.7) rotate(20deg); }
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background effects -->
+<div class="bg-glow"></div>
+<div class="embers" id="embers"></div>
+<div class="hearts" id="hearts"></div>
+
+<div class="card">
+
+  <!-- Diluc illustration (SVG) -->
+  <div class="diluc-wrap">
+    <svg class="diluc-svg" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+      <!-- Flame aura behind -->
+      <ellipse cx="70" cy="118" rx="38" ry="12" fill="rgba(200,40,0,0.3)"/>
+      <ellipse cx="70" cy="108" rx="24" ry="30" fill="rgba(180,20,0,0.18)"/>
+
+      <!-- Cape / body shadow -->
+      <ellipse cx="70" cy="108" rx="30" ry="22" fill="#1A0408"/>
+
+      <!-- Cape (dark red) -->
+      <path d="M40 90 Q35 115 42 128 Q55 135 70 132 Q85 135 98 128 Q105 115 100 90 Q85 110 70 112 Q55 110 40 90Z" fill="#5A0010"/>
+      <path d="M44 92 Q50 108 70 112 Q90 108 96 92" fill="none" stroke="#8B0020" stroke-width="1.5" opacity="0.6"/>
+
+      <!-- Coat body -->
+      <path d="M48 82 Q44 100 44 120 Q57 128 70 129 Q83 128 96 120 Q96 100 92 82 Q82 90 70 90 Q58 90 48 82Z" fill="#1C0A14"/>
+      <!-- Coat highlight -->
+      <path d="M55 84 Q52 100 53 118" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="2"/>
+
+      <!-- Neck -->
+      <rect x="63" y="62" width="14" height="16" rx="5" fill="#C4907A"/>
+
+      <!-- Cravat/collar -->
+      <path d="M63 68 Q70 76 77 68 L74 64 Q70 68 66 64Z" fill="#8B0000"/>
+      <path d="M67 68 L70 80 L73 68" fill="#6B0000" stroke="#8B0000" stroke-width="0.5"/>
+
+      <!-- Shoulders & coat top -->
+      <path d="M44 80 Q50 72 63 68 Q70 70 77 68 Q90 72 96 80 L92 90 Q82 84 70 84 Q58 84 48 90Z" fill="#2A1020"/>
+      <!-- Shoulder pads -->
+      <ellipse cx="47" cy="80" rx="7" ry="5" fill="#8B0000" transform="rotate(-15,47,80)"/>
+      <ellipse cx="93" cy="80" rx="7" ry="5" fill="#8B0000" transform="rotate(15,93,80)"/>
+
+      <!-- Head -->
+      <ellipse cx="70" cy="50" rx="22" ry="24" fill="#C4907A"/>
+      <!-- Jaw shadow -->
+      <path d="M52 58 Q60 72 70 74 Q80 72 88 58" fill="rgba(0,0,0,0.12)"/>
+
+      <!-- Hair base (dark red) -->
+      <path d="M48 42 Q50 20 70 18 Q90 20 92 42 Q88 30 70 28 Q52 30 48 42Z" fill="#6B0010"/>
+      <!-- Hair top flowing -->
+      <path d="M54 22 Q58 10 70 8 Q82 10 86 22 Q80 14 70 13 Q60 14 54 22Z" fill="#8B0015"/>
+      <!-- Hair side locks -->
+      <path d="M48 42 Q44 50 46 60 Q50 48 52 44Z" fill="#6B0010"/>
+      <path d="M92 42 Q96 50 94 60 Q90 48 88 44Z" fill="#6B0010"/>
+      <!-- Hair strand -->
+      <path d="M62 18 Q64 28 60 36" fill="none" stroke="#8B0015" stroke-width="3" stroke-linecap="round"/>
+      <path d="M70 14 Q72 24 70 34" fill="none" stroke="#9B0018" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- Eyes -->
+      <ellipse cx="61" cy="50" rx="5" ry="5.5" fill="#1A0508"/>
+      <ellipse cx="79" cy="50" rx="5" ry="5.5" fill="#1A0508"/>
+      <!-- Iris (wine red) -->
+      <ellipse cx="61" cy="50.5" rx="3.5" ry="4" fill="#8B1020"/>
+      <ellipse cx="79" cy="50.5" rx="3.5" ry="4" fill="#8B1020"/>
+      <!-- Pupil -->
+      <ellipse cx="61" cy="51" rx="2" ry="2.5" fill="#0D0205"/>
+      <ellipse cx="79" cy="51" rx="2" ry="2.5" fill="#0D0205"/>
+      <!-- Eye shine -->
+      <ellipse cx="62.5" cy="49" rx="1" ry="1.2" fill="rgba(255,255,255,0.5)"/>
+      <ellipse cx="80.5" cy="49" rx="1" ry="1.2" fill="rgba(255,255,255,0.5)"/>
+      <!-- Eyebrows -->
+      <path d="M56 44 Q61 41 66 43" fill="none" stroke="#4A0008" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M74 43 Q79 41 84 44" fill="none" stroke="#4A0008" stroke-width="2.2" stroke-linecap="round"/>
+
+      <!-- Nose -->
+      <path d="M68 56 Q70 59 72 56" fill="none" stroke="#A8704A" stroke-width="1.2" stroke-linecap="round"/>
+
+      <!-- Slight frown / reluctant mouth -->
+      <path d="M63 64 Q67 62 70 63 Q73 62 77 64" fill="none" stroke="#A87060" stroke-width="1.5" stroke-linecap="round"/>
+
+      <!-- Tiny blush -->
+      <ellipse cx="55" cy="58" rx="6" ry="3" fill="rgba(255,120,100,0.22)"/>
+      <ellipse cx="85" cy="58" rx="6" ry="3" fill="rgba(255,120,100,0.22)"/>
+
+      <!-- Rose in hand -->
+      <line x1="96" y1="100" x2="108" y2="80" stroke="#2D5A1B" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- Thorns -->
+      <path d="M100 94 L104 91" fill="none" stroke="#2D5A1B" stroke-width="1.5"/>
+      <path d="M103 88 L107 86" fill="none" stroke="#2D5A1B" stroke-width="1.5"/>
+      <!-- Rose petals -->
+      <ellipse cx="108" cy="78" rx="7" ry="6" fill="#AA0020" transform="rotate(-20,108,78)"/>
+      <ellipse cx="111" cy="80" rx="5" ry="4" fill="#CC0025" transform="rotate(10,111,80)"/>
+      <ellipse cx="106" cy="75" rx="5" ry="4" fill="#BB0022" transform="rotate(-40,106,75)"/>
+      <ellipse cx="109" cy="77" rx="3.5" ry="3" fill="#DD1030"/>
+      <!-- Rose center -->
+      <circle cx="109" cy="77" r="2" fill="#990018"/>
+      <!-- Leaves -->
+      <path d="M104 86 Q98 82 96 87 Q100 88 104 86Z" fill="#3A7A20"/>
+
+      <!-- Small flame wisps (pyro vision) -->
+      <path d="M34 76 Q30 68 33 60 Q35 68 34 76Z" fill="rgba(255,80,0,0.7)"/>
+      <path d="M32 72 Q27 62 31 52 Q33 62 32 72Z" fill="rgba(255,40,0,0.5)"/>
+      <path d="M36 74 Q34 68 36 63 Q37 68 36 74Z" fill="rgba(255,120,0,0.6)"/>
+
+      <!-- Claymore handle hint -->
+      <rect x="95" y="95" width="5" height="22" rx="2" fill="#5A4020" opacity="0.4"/>
+    </svg>
+    <div class="halo"></div>
+  </div>
+
+  <p class="title">— A Sincere Apology —</p>
+  <h1 class="sorry-text">I'm Sorry</h1>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span class="divider-rose">🌹</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <p class="message">
+    Even Diluc — the proud <strong>Dark Knight Hero of Mondstadt</strong> —
+    knows when to set his blade aside and offer a rose instead.<br><br>
+    And so, I stand before you, without pride or pretense,
+    to say that I am truly, deeply <strong>sorry</strong>.
+    You deserve so much better, and I know it.
+  </p>
+
+  <button class="btn" onclick="acceptApology()">💛 I Forgive You</button>
+
+  <div class="response" id="response">
+    🌹 <em>"...Good. Don't make me do this again."</em><br>
+    <span style="color:var(--ash); font-size:13px;">— Diluc, probably. But also: Thank you. Truly. 💛</span>
+  </div>
+
+  <p class="quote">❝ Even the strongest flame can be a gentle warmth. ❞</p>
+</div>
+
+<script>
+  // Generate ember particles
+  const embersEl = document.getElementById('embers');
+  for (let i = 0; i < 30; i++) {
+    const e = document.createElement('div');
+    e.className = 'ember';
+    const size = Math.random() * 4 + 2;
+    e.style.cssText = `
+      width: ${size}px; height: ${size}px;
+      left: ${Math.random() * 100}%;
+      --drift: ${(Math.random() - 0.5) * 120}px;
+      animation-duration: ${Math.random() * 5 + 4}s;
+      animation-delay: ${Math.random() * 6}s;
+    `;
+    embersEl.appendChild(e);
+  }
+
+  // Accept apology
+  function acceptApology() {
+    const res = document.getElementById('response');
+    res.style.display = 'block';
+    spawnHearts();
+    document.querySelector('.btn').textContent = '🌹 Already Forgiven';
+    document.querySelector('.btn').style.background = 'linear-gradient(135deg, #2D5A1B, #4A8A28)';
+  }
+
+  function spawnHearts() {
+    const heartsEl = document.getElementById('hearts');
+    const emojis = ['💛','🌹','✨','🔥','💕'];
+    for (let i = 0; i < 18; i++) {
+      setTimeout(() => {
+        const h = document.createElement('div');
+        h.className = 'heart';
+        h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        h.style.cssText = `
+          left: ${Math.random() * 90 + 5}%;
+          top: ${Math.random() * 60 + 20}%;
+          font-size: ${Math.random() * 16 + 12}px;
+          animation-duration: ${Math.random() * 1.5 + 2}s;
+          animation-delay: 0s;
+        `;
+        heartsEl.appendChild(h);
+        setTimeout(() => h.remove(), 3500);
+      }, i * 100);
+    }
+  }
+</script>
+</body>
+</html>
